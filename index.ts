@@ -2,12 +2,19 @@ import express from "express";
 import bookingsController from "./controllers/booking";
 import roomsController from "./controllers/room";
 import usersController from "./controllers/user";
+import contactController from "./controllers/contact";
 
 const app = express();
 const port = 3000;
 
 // Montar las rutas del controlador
-app.use("/", bookingsController, roomsController, usersController);
+app.use(
+  "/",
+  bookingsController,
+  roomsController,
+  usersController,
+  contactController
+);
 app.use(express.json());
 
 app.listen(port, () => {
