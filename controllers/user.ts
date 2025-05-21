@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
+import UserList from "./../data/users.json";
 
 export const usersController = Router();
 
@@ -8,7 +9,7 @@ usersController.get(
   "/users",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send("Users page");
+    res.send(UserList);
   }
 );
 
@@ -18,7 +19,12 @@ usersController.get(
   authenticateToken,
   (req: Request, res: Response) => {
     const userId = req.params.id;
-    res.send(`User details for ID: ${userId}`);
+    const userFinded = UserList.find((user) => user.id.toString() === userId);
+    if (!userFinded) {
+      res.status(404).send("User not found");
+      return;
+    }
+    res.send(userFinded);
   }
 );
 

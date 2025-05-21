@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
+import BookingList from "./../data/bookings.json";
 
 export const bookingsController = Router();
 
@@ -8,7 +9,7 @@ bookingsController.get(
   "/booking",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send("Booking page");
+    res.send(BookingList);
   }
 );
 
@@ -18,7 +19,14 @@ bookingsController.get(
   authenticateToken,
   (req: Request, res: Response) => {
     const bookingId = req.params.id;
-    res.send(`Booking details for ID: ${bookingId}`);
+    const bookingFinded = BookingList.find(
+      (booking) => booking.id === bookingId
+    );
+    if (!bookingFinded) {
+      res.status(404).send("Booking not found");
+      return;
+    }
+    res.send(bookingFinded);
   }
 );
 

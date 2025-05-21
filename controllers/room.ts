@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
+import RoomList from "./../data/rooms.json";
 
 export const roomsController = Router();
 
@@ -8,7 +9,7 @@ roomsController.get(
   "/rooms",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send("Rooms page");
+    res.send(RoomList);
   }
 );
 
@@ -18,7 +19,14 @@ roomsController.get(
   authenticateToken,
   (req: Request, res: Response) => {
     const roomId = req.params.id;
-    res.send(`Room details for ID: ${roomId}`);
+    const roomFinded = RoomList.find(
+      (room) => room.roomNumber.toString() === roomId
+    );
+    if (!roomFinded) {
+      res.status(404).send("Room not found");
+      return;
+    }
+    res.send(roomFinded);
   }
 );
 
