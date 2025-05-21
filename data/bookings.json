@@ -1,0 +1,178 @@
+[
+  {
+    "id": "000123456",
+    "name": "Cahyadi Purnomo",
+    "image": "https://randomuser.me/api/portraits/women/1.jpg",
+    "orderDate": "Oct 30th 2020 09:21 AM",
+    "checkIn": "Nov 2nd, 2020 09:46 PM",
+    "checkOut": "Nov 4th, 2020 6:12 PM",
+    "specialRequest": {
+      "status": true,
+      "text": "Late check-out requested"
+    },
+    "roomType": "Single Bed - Elegant",
+    "status": "Check In",
+    "phone": "+62 812-3456-7890",
+    "email": "cahyadi.purnomo@example.com"
+  },
+  {
+    "id": "000123457",
+    "name": "Luis Martínez",
+    "image": "https://randomuser.me/api/portraits/men/2.jpg",
+    "orderDate": "Sep 15th 2020 03:45 PM",
+    "checkIn": "Sep 18th, 2020 2:30 PM",
+    "checkOut": "Sep 20th, 2020 11:00 AM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Double Bed - Luxe",
+    "status": "Check Out",
+    "phone": "+34 612-345-678",
+    "email": "luis.martinez@example.com"
+  },
+  {
+    "id": "000123458",
+    "name": "Sophia Lee",
+    "image": "https://randomuser.me/api/portraits/women/3.jpg",
+    "orderDate": "Oct 5th 2020 10:00 AM",
+    "checkIn": "Oct 10th, 2020 1:15 PM",
+    "checkOut": "Oct 12th, 2020 9:45 AM",
+    "specialRequest": {
+      "status": true,
+      "text": "Late check-out requested"
+    },
+    "roomType": "Suite - Presidential",
+    "status": "In progress",
+    "phone": "+1 917-555-0132",
+    "email": "sophia.lee@example.com"
+  },
+  {
+    "id": "000123459",
+    "name": "Carlos Gómez",
+    "image": "https://randomuser.me/api/portraits/men/4.jpg",
+    "orderDate": "Nov 1st 2020 06:22 PM",
+    "checkIn": "Nov 3rd, 2020 5:00 PM",
+    "checkOut": "Nov 5th, 2020 10:00 AM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Double Superior - Signature",
+    "status": "Check In",
+    "phone": "+52 55 1234 5678",
+    "email": "carlos.gomez@example.com"
+  },
+  {
+    "id": "000123460",
+    "name": "Emma Johansson",
+    "image": "https://randomuser.me/api/portraits/women/5.jpg",
+    "orderDate": "Aug 25th 2020 01:15 PM",
+    "checkIn": "Aug 28th, 2020 12:30 PM",
+    "checkOut": "Aug 30th, 2020 1:00 PM",
+    "specialRequest": {
+      "status": true,
+      "text": "Allergic to peanuts"
+    },
+    "roomType": "Single Bed - Executive",
+    "status": "Check Out",
+    "phone": "+46 70 123 45 67",
+    "email": "emma.johansson@example.com"
+  },
+  {
+    "id": "000123461",
+    "name": "Noah Kim",
+    "image": "https://randomuser.me/api/portraits/men/6.jpg",
+    "orderDate": "Jul 19th 2020 04:00 PM",
+    "checkIn": "Jul 21st, 2020 4:00 PM",
+    "checkOut": "Jul 23rd, 2020 12:00 PM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Double Bed - Deluxe",
+    "status": "In progress",
+    "phone": "+82 10-1234-5678",
+    "email": "noah.kim@example.com"
+  },
+  {
+    "id": "000123462",
+    "name": "Isabella Rossi",
+    "image": "https://randomuser.me/api/portraits/women/7.jpg",
+    "orderDate": "Jun 10th 2020 09:55 AM",
+    "checkIn": "Jun 13th, 2020 3:30 PM",
+    "checkOut": "Jun 16th, 2020 11:00 AM",
+    "specialRequest": {
+      "status": true,
+      "text": "Vegetarian meals only"
+    },
+    "roomType": "Suite B - 02",
+    "status": "Check In",
+    "phone": "+39 347 123 4567",
+    "email": "isabella.rossi@example.com"
+  },
+  {
+    "id": "000123463",
+    "name": "Ethan Brown",
+    "image": "https://randomuser.me/api/portraits/men/8.jpg",
+    "orderDate": "May 30th 2020 11:40 AM",
+    "checkIn": "Jun 1st, 2020 2:00 PM",
+    "checkOut": "Jun 3rd, 2020 10:30 AM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Double Superior - Cityview",
+    "status": "Check Out",
+    "phone": "+1 212-555-0198",
+    "email": "ethan.brown@example.com"
+  },
+  {
+    "id": "000123464",
+    "name": "Ava Nguyen",
+    "image": "https://randomuser.me/api/portraits/women/9.jpg",
+    "orderDate": "Mar 12th 2020 08:20 PM",
+    "checkIn": "Mar 15th, 2020 5:45 PM",
+    "checkOut": "Mar 18th, 2020 11:30 AM",
+    "specialRequest": {
+      "status": true,
+      "text": "Early check-in"
+    },
+    "roomType": "Suite - Signature",
+    "status": "In progress",
+    "phone": "+84 90 123 4567",
+    "email": "ava.nguyen@example.com"
+  },
+  {
+    "id": "000123465",
+    "name": "Oliver Dupont",
+    "image": "https://randomuser.me/api/portraits/men/10.jpg",
+    "orderDate": "Feb 10th 2020 07:05 AM",
+    "checkIn": "Feb 13th, 2020 6:00 PM",
+    "checkOut": "Feb 16th, 2020 12:15 PM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Single Bed - Luxury",
+    "status": "Check In",
+    "phone": "+33 6 12 34 56 78",
+    "email": "oliver.dupont@example.com"
+  },
+  {
+    "id": "000123466",
+    "name": "Lena Fischer",
+    "image": "https://randomuser.me/api/portraits/women/11.jpg",
+    "orderDate": "Jan 22nd 2025 09:15 AM",
+    "checkIn": "Jan 25th, 2025 4:30 PM",
+    "checkOut": "Jan 28th, 2025 11:00 AM",
+    "specialRequest": {
+      "status": false,
+      "text": ""
+    },
+    "roomType": "Doble Bed - Refined",
+    "status": "Check Out",
+    "phone": "+49 170 123 4567",
+    "email": "lena.fischer@example.com"
+  }
+]
