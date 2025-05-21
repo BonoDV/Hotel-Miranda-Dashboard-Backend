@@ -4,6 +4,7 @@ import roomsController from "./controllers/room";
 import usersController from "./controllers/user";
 import contactController from "./controllers/contact";
 import loginController from "./controllers/login";
+import publicController from "./controllers/public";
 
 require("dotenv").config();
 
@@ -19,7 +20,8 @@ app.use(
   roomsController,
   usersController,
   contactController,
-  loginController
+  loginController,
+  publicController
 );
 
 app.listen(port, () => {
