@@ -3,6 +3,36 @@ import { loginUser } from "../services/login";
 
 export const loginController = Router();
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: User login with jwt
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login exitoso
+ *       400:
+ *        description: Usuario y contraseña requeridos
+ *       401:
+ *         description: Credenciales inválidas
+ *
+ */
+
 loginController.post("/login", (req: any, res: any) => {
   const { username, password } = req.body;
 

@@ -9,6 +9,32 @@ import loginController from "./login";
 
 export const publicController = Router();
 
+/**
+ * @swagger
+ * /routes:
+ *   get:
+ *     summary: Muestra todos los endpoints privados disponibles
+ *     tags: [Public]
+ *     responses:
+ *       200:
+ *         description: Lista de endpoints privados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 hotelName:
+ *                   type: string
+ *                 descripcion:
+ *                   type: string
+ *                 endpointsPrivados:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                 nota:
+ *                   type: string
+ */
+
 publicController.get("/routes", (req: Request, res: Response) => {
   // Obtener los endpoints de cada controlador
   const routes = [
