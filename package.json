@@ -20,5 +20,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
+  },
+  "scripts": {
+    "test": "jest"
   }
 }
