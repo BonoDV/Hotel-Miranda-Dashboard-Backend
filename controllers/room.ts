@@ -58,7 +58,6 @@ export const roomsController = Router();
  *           example: ["WiFi", "TV", "Mini Bar"]
  */
 
-
 /**
  * @swagger
  * /rooms:
@@ -170,11 +169,11 @@ roomsController.post(
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: roomNumber
  *         required: true
  *         schema:
- *           type: string
- *         description: Número de habitación a actualizar
+ *           type: integer
+ *         description: ID de la habitación a actualizar
  *     requestBody:
  *       description: Datos actualizados de la habitación
  *       required: true
@@ -184,7 +183,7 @@ roomsController.post(
  *             $ref: '#/components/schemas/Room'
  *     responses:
  *       200:
- *         description: Habitación actualizada correctamente
+ *         description: habitación actualizada correctamente
  */
 
 // Update room by ID

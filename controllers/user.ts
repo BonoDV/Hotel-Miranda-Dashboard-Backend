@@ -159,7 +159,7 @@ usersController.post(
 
 /**
  * @swagger
- * /rooms/{id}:
+ * /users/{id}:
  *   put:
  *     summary: Actualizar un trabajador por ID
  *     tags: [User]
