@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
 import RoomList from "./../data/rooms.json";
-
+import { getAllRooms, getRoomById } from "../services/room";
 export const roomsController = Router();
 
 /**
@@ -82,7 +82,8 @@ roomsController.get(
   "/rooms",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send(RoomList);
+    const rooms = getAllRooms();
+    res.send(rooms);
   }
 );
 
@@ -117,15 +118,13 @@ roomsController.get(
   "/rooms/:id",
   authenticateToken,
   (req: Request, res: Response) => {
-    const roomId = req.params.id;
-    const roomFinded = RoomList.find(
-      (room) => room.roomNumber.toString() === roomId
-    );
-    if (!roomFinded) {
+    try {
+      const roomId = Number(req.params.id);
+      const room = getRoomById(roomId);
+      res.send(room);
+    } catch (error) {
       res.status(404).send("Room not found");
-      return;
     }
-    res.send(roomFinded);
   }
 );
 

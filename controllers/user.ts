@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
 import UserList from "./../data/users.json";
-
+import { getAllUsers, getUsersById } from "../services/user";
 export const usersController = Router();
 
 /**
@@ -82,7 +82,8 @@ usersController.get(
   "/users",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send(UserList);
+    const users = getAllUsers();
+    res.send(users);
   }
 );
 
@@ -117,13 +118,13 @@ usersController.get(
   "/users/:id",
   authenticateToken,
   (req: Request, res: Response) => {
-    const userId = req.params.id;
-    const userFinded = UserList.find((user) => user.id.toString() === userId);
-    if (!userFinded) {
+    try {
+      const userId = req.params.id;
+      const user = getUsersById(userId);
+      res.send(user);
+    } catch (error) {
       res.status(404).send("User not found");
-      return;
     }
-    res.send(userFinded);
   }
 );
 

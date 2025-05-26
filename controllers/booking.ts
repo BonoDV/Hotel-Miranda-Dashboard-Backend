@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
 import BookingList from "./../data/bookings.json";
-
+import { getAllBookings, getBookingsById } from "../services/booking";
 export const bookingsController = Router();
 
 /**
@@ -84,7 +84,8 @@ bookingsController.get(
   "/booking",
   authenticateToken,
   (req: Request, res: Response) => {
-    res.send(BookingList);
+    const bookings = getAllBookings();
+    res.send(bookings);
   }
 );
 
