@@ -1,6 +1,5 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
-import BookingList from "./../data/bookings.json";
 import { getAllBookings, getBookingsById } from "../services/booking";
 export const bookingsController = Router();
 
@@ -83,9 +82,13 @@ export const bookingsController = Router();
 bookingsController.get(
   "/booking",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const bookings = getAllBookings();
-    res.send(bookings);
+  async (req: Request, res: Response) => {
+    try {
+      const bookings = await getAllBookings();
+      res.send(bookings);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -119,16 +122,10 @@ bookingsController.get(
 bookingsController.get(
   "/booking/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const bookingId = req.params.id;
-    const bookingFinded = BookingList.find(
-      (booking) => booking.id === bookingId
-    );
-    if (!bookingFinded) {
-      res.status(404).send("Booking not found");
-      return;
-    }
-    res.send(bookingFinded);
+    const bookingFinded = await getBookingsById(bookingId);
+    res.status(200).send(bookingFinded);
   }
 );
 
