@@ -13,7 +13,7 @@ const UserSchema = new Schema({
   schedule: String,
   function_description: String,
   status: Boolean,
-  password: String, // hashed
+  password: { type: String, required: true }, // hashed
 });
 
 export default model("User", UserSchema);

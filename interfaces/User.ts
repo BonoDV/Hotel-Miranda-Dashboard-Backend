@@ -1,4 +1,4 @@
-export type Concierge = {
+export type User = {
   id: string;
   photo: string;
   first_name: string;

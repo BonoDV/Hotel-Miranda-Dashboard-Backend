@@ -6,6 +6,7 @@ import contactController from "./controllers/contact";
 import loginController from "./controllers/login";
 import publicController from "./controllers/public";
 import { swaggerUi, swaggerSpec } from "./swagger";
+import { connectDB } from "./db";
 
 require("dotenv").config();
 

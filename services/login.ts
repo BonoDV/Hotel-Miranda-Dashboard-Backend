@@ -1,23 +1,54 @@
-// src/services/login.ts
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import User from "../models/UserSchema";
+import mongoose from "mongoose";
+require("dotenv").config();
 
-const SECRET_KEY = "mi_clave_secreta";
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in environment variables");
+}
 
-const hardcodedUser = {
-  username: "admin",
-  password: "1234",
-};
-
-export const loginUser = (
-  username: string,
+export const loginUser = async (
+  email: string,
   password: string
-): string | null => {
-  if (
-    username === hardcodedUser.username &&
-    password === hardcodedUser.password
-  ) {
-    const token = jwt.sign({ username }, SECRET_KEY, { expiresIn: "1h" });
-    return token;
+): Promise<{
+  status: number;
+  data?: { token: string };
+  message?: string;
+}> => {
+  if (!email || !password) {
+    return { status: 400, message: "Email y contraseña requeridos" };
   }
-  return null;
+
+  try {
+    const user = await User.findOne({ email });
+
+    // Logs para depuración (opcional)
+    console.log("Base de datos conectada:", mongoose.connection.name);
+    console.log("Usuario encontrado:", user);
+
+    if (!user || typeof user.password !== "string") {
+      return { status: 401, message: "Credenciales inválidas" };
+    }
+
+    // Aquí comparas la contraseña ingresada con la guardada (hashed)
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    console.log(user.password, password, isPasswordValid);
+    if (!isPasswordValid) {
+      return { status: 401, message: "Credenciales inválidas1" };
+    }
+
+    // Generar token JWT con payload, puedes agregar más datos si quieres
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+
+    return { status: 200, data: { token } };
+  } catch (error) {
+    console.error("Error en loginUser:", error);
+    return { status: 500, message: "Error interno del servidor" };
+  }
 };

@@ -1,6 +1,12 @@
 import { faker } from "@faker-js/faker";
-import { run } from "./db";
 import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+import mongoose from "mongoose";
+
+import { connectDB } from "./db";
+import Room from "./models/RoomSchema";
+import User from "./models/UserSchema";
+import Booking from "./models/BookingSchema";
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -8,14 +14,7 @@ function randomInt(min: number, max: number): number {
 
 async function seedDB() {
   try {
-    const client = await run();
-    console.log("Connected correctly to server");
-
-    const db = client.db("Hotel_Dashboard");
-
-    const bookingsCollection = db.collection("bookings");
-    const usersCollection = db.collection("users");
-    const roomsCollection = db.collection("rooms");
+    await connectDB();
 
     const bookings = [];
     const users = [];
@@ -71,6 +70,9 @@ async function seedDB() {
     for (let i = 0; i < 20; i++) {
       const first_name = faker.person.firstName();
       const last_name = faker.person.lastName();
+      const plainPassword = faker.internet.password();
+      const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
       users.push({
         id: uuidv4(),
         photo: faker.image.avatar(),
@@ -86,7 +88,7 @@ async function seedDB() {
         schedule: faker.helpers.arrayElement(schedules),
         function_description: faker.lorem.sentence(),
         status: faker.datatype.boolean(),
-        password: faker.internet.password(), // hash it in production
+        password: hashedPassword,
       });
     }
 
@@ -129,14 +131,14 @@ async function seedDB() {
       });
     }
 
-    // Insert in DB
-    await usersCollection.insertMany(users);
-    await roomsCollection.insertMany(rooms);
-    await bookingsCollection.insertMany(bookings);
+    // Insert documents usando mongoose
+    await Room.insertMany(rooms);
+    await User.insertMany(users);
+    await Booking.insertMany(bookings);
 
     console.log("Database seeded successfully 🚀");
 
-    await client.close();
+    await mongoose.disconnect();
   } catch (err: unknown) {
     if (err instanceof Error) {
       console.error(err.stack);
