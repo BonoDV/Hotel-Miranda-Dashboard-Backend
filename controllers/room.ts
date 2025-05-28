@@ -1,7 +1,12 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
-import RoomList from "./../data/rooms.json";
-import { getAllRooms, getRoomById } from "../services/room";
+import {
+  getAllRooms,
+  getRoomById,
+  createRoom,
+  updateRoom,
+  deleteRoom,
+} from "../services/room";
 export const roomsController = Router();
 
 /**
@@ -75,15 +80,21 @@ export const roomsController = Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Room'
+ *       500:
+ *         description: Error
  */
 
 // Get all rooms
 roomsController.get(
   "/rooms",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const rooms = getAllRooms();
-    res.send(rooms);
+  async (req: Request, res: Response) => {
+    try {
+      const rooms = await getAllRooms();
+      res.send(rooms);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -117,11 +128,11 @@ roomsController.get(
 roomsController.get(
   "/rooms/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
+    const roomId = Number(req.params.id);
     try {
-      const roomId = Number(req.params.id);
-      const room = getRoomById(roomId);
-      res.send(room);
+      const room = await getRoomById(roomId);
+      res.status(200).send(room);
     } catch (error) {
       res.status(404).send("Room not found");
     }
@@ -146,15 +157,22 @@ roomsController.get(
  *     responses:
  *       201:
  *         description: Habitación creada correctamente
+ *       500:
+ *         description: Error al crear la habitación
  */
 
 // Create a new room
 roomsController.post(
   "/rooms",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const newRoom = req.body;
-    res.status(201).send(`New room created: ${JSON.stringify(newRoom)}`);
+    try {
+      const roomCreate = await createRoom(newRoom);
+      res.status(201).send(roomCreate);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -183,15 +201,25 @@ roomsController.post(
  *     responses:
  *       200:
  *         description: habitación actualizada correctamente
+ *       500:
+ *        description: Error
  */
 
 // Update room by ID
 roomsController.put(
   "/rooms/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const roomId = req.params.id;
-    res.send(`Room with ID: ${roomId} updated`);
+  async (req: Request, res: Response) => {
+    const roomId = Number(req.params.id);
+    const updatedRoomData = req.body;
+    try {
+      const updatedRoom = await updateRoom(roomId, updatedRoomData);
+      res
+        .status(200)
+        .send(`Room with roomNumber: ${roomId} updated successfully`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -213,15 +241,22 @@ roomsController.put(
  *     responses:
  *       200:
  *         description: Habitación eliminada correctamente
+ *       500:
+ *        description: Error
  */
 
 // Delete room by ID
 roomsController.delete(
   "/rooms/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const roomId = req.params.id;
-    res.send(`Room with ID: ${roomId} deleted`);
+  async (req: Request, res: Response) => {
+    const roomId = Number(req.params.id);
+    try {
+      const deletedRoom = await deleteRoom(roomId);
+      res.status(200).send(deletedRoom);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
