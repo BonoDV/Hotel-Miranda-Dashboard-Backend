@@ -132,8 +132,12 @@ bookingsController.get(
   authenticateToken,
   async (req: Request, res: Response) => {
     const bookingId = req.params.id;
-    const bookingFinded = await getBookingsById(bookingId);
-    res.status(200).send(bookingFinded);
+    try {
+      const bookingFinded = await getBookingsById(bookingId);
+      res.status(200).send(bookingFinded);
+    } catch (error: any) {
+      res.status(404).send({ message: error.message });
+    }
   }
 );
 
@@ -155,6 +159,8 @@ bookingsController.get(
  *     responses:
  *       201:
  *         description: Reserva creada correctamente
+ *       500:
+ *         description: Error
  */
 
 // Create a new booking
@@ -163,8 +169,14 @@ bookingsController.post(
   authenticateToken,
   async (req: Request, res: Response) => {
     const newBooking = req.body;
-    const bookingCreate = await createBooking(newBooking);
-    res.status(201).send(`New booking created: ${JSON.stringify(newBooking)}`);
+    try {
+      const bookingCreate = await createBooking(newBooking);
+      res
+        .status(201)
+        .send(`New booking created: ${JSON.stringify(newBooking)}`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
