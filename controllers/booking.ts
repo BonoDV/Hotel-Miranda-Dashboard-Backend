@@ -1,6 +1,12 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
-import { getAllBookings, getBookingsById } from "../services/booking";
+import {
+  getAllBookings,
+  getBookingsById,
+  createBooking,
+  updateBooking,
+  deleteBooking,
+} from "../services/booking";
 export const bookingsController = Router();
 
 /**
@@ -153,8 +159,9 @@ bookingsController.get(
 bookingsController.post(
   "/booking",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const newBooking = req.body;
+    const bookingCreate = await createBooking(newBooking);
     res.status(201).send(`New booking created: ${JSON.stringify(newBooking)}`);
   }
 );
@@ -190,9 +197,17 @@ bookingsController.post(
 bookingsController.put(
   "/booking/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const bookingId = req.params.id;
-    res.send(`Booking with ID: ${bookingId} updated`);
+    const updatedBookingData = req.body;
+    try {
+      const updatedBooking = await updateBooking(bookingId, updatedBookingData);
+      res
+        .status(200)
+        .send(`Booking with ID: ${bookingId} updated successfully`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -220,9 +235,14 @@ bookingsController.put(
 bookingsController.delete(
   "/booking/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const bookingId = req.params.id;
-    res.send(`Booking with ID: ${bookingId} deleted`);
+    try {
+      const deletedBooking = await deleteBooking(bookingId);
+      res.status(200).send(deletedBooking);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 

@@ -24,7 +24,6 @@ export const loginUser = async (
   try {
     const user = await User.findOne({ email });
 
-    // Logs para depuración (opcional)
     console.log("Base de datos conectada:", mongoose.connection.name);
     console.log("Usuario encontrado:", user);
 
@@ -32,14 +31,12 @@ export const loginUser = async (
       return { status: 401, message: "Credenciales inválidas" };
     }
 
-    // Aquí comparas la contraseña ingresada con la guardada (hashed)
     const isPasswordValid = await bcrypt.compare(password, user.password);
     console.log(user.password, password, isPasswordValid);
     if (!isPasswordValid) {
       return { status: 401, message: "Credenciales inválidas1" };
     }
 
-    // Generar token JWT con payload, puedes agregar más datos si quieres
     const token = jwt.sign(
       { userId: user._id, email: user.email },
       JWT_SECRET,

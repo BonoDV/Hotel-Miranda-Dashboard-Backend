@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const BookingSchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, unique: true },
   name: String,
   image: String,
   orderDate: String,
