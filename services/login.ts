@@ -24,15 +24,12 @@ export const loginUser = async (
   try {
     const user = await User.findOne({ email });
 
-    console.log("Base de datos conectada:", mongoose.connection.name);
-    console.log("Usuario encontrado:", user);
-
     if (!user || typeof user.password !== "string") {
       return { status: 401, message: "Credenciales inválidas" };
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log(user.password, password, isPasswordValid);
+
     if (!isPasswordValid) {
       return { status: 401, message: "Credenciales inválidas1" };
     }
