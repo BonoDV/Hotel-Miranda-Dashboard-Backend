@@ -1,7 +1,13 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
 import UserList from "./../data/users.json";
-import { getAllUsers, getUsersById } from "../services/user";
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUsersById,
+  updateUser,
+} from "../services/user";
 export const usersController = Router();
 
 /**
@@ -81,9 +87,13 @@ export const usersController = Router();
 usersController.get(
   "/users",
   authenticateToken,
-  (req: Request, res: Response) => {
-    const users = getAllUsers();
-    res.send(users);
+  async (req: Request, res: Response) => {
+    try {
+      const users = await getAllUsers();
+      res.send(users);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -110,20 +120,26 @@ usersController.get(
  *             schema:
  *               $ref: '#/components/schemas/User'
  *       404:
- *         description: Trabajador no encontrada
+ *         description: Trabajador no encontrado
+ *       500:
+ *        description: Error
  */
 
 // Get user by ID
 usersController.get(
   "/users/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
+    const userId = req.params.id;
     try {
-      const userId = req.params.id;
-      const user = getUsersById(userId);
-      res.send(user);
-    } catch (error) {
-      res.status(404).send("User not found");
+      const userFinded = await getUsersById(userId);
+      res.status(200).send(userFinded);
+    } catch (error: any) {
+      if (error.message === "User not found") {
+        res.status(404).send({ message: error.message });
+      } else {
+        res.status(500).send({ message: error.message });
+      }
     }
   }
 );
@@ -146,15 +162,22 @@ usersController.get(
  *     responses:
  *       201:
  *         description: Trabajador creado correctamente
+ *       500:
+ *        description: Error
  */
 
 // Create a new user
 usersController.post(
   "/users",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const newUser = req.body;
-    res.status(201).send(`New user created: ${JSON.stringify(newUser)}`);
+    try {
+      const userCreate = await createUser(newUser);
+      res.status(201).send(`New user created: ${JSON.stringify(newUser)}`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -183,15 +206,23 @@ usersController.post(
  *     responses:
  *       200:
  *         description: Trabajador actualizado correctamente
+ *       500:
+ *         description: Error
  */
 
 // Update user by ID
 usersController.put(
   "/users/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const userId = req.params.id;
-    res.send(`User with ID: ${userId} updated`);
+    const updateUserData = req.body;
+    try {
+      const updatedUser = await updateUser(userId, updateUserData);
+      res.status(200).send(`User with ID: ${userId} updated successfully`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -213,15 +244,22 @@ usersController.put(
  *     responses:
  *       200:
  *         description: Trabajador eliminado correctamente
+ *       500:
+ *         description: Error
  */
 
 // Delete user by ID
 usersController.delete(
   "/users/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const userId = req.params.id;
-    res.send(`User with ID: ${userId} deleted`);
+    try {
+      const deletedUser = await deleteUser(userId);
+      res.status(200).send(deletedUser);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
