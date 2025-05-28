@@ -82,6 +82,8 @@ export const bookingsController = Router();
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Booking'
+ *       500:
+ *         description: Error
  */
 
 // Get all bookings
@@ -191,6 +193,8 @@ bookingsController.post(
  *     responses:
  *       200:
  *         description: Reserva actualizada correctamente
+ *       500:
+ *         description: Error
  */
 
 // Update booking by ID
@@ -229,6 +233,8 @@ bookingsController.put(
  *     responses:
  *       200:
  *         description: Reserva eliminada correctamente
+ *       500:
+ *         description: Error
  */
 
 // Delete booking by ID
