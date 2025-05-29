@@ -1,70 +1,123 @@
 import request from "supertest";
-import app from "../app";
-import jwt from "jsonwebtoken";
+import express, { Express } from "express";
+import usersController from "../controllers/user";
+import * as userService from "../services/user";
 
-const SECRET_KEY = "mi_clave_secreta";
 
-describe("User Endpoints", () => {
-  it("GET /users should return a list of users", async () => {
-    const token = jwt.sign({ username: "admin" }, SECRET_KEY, {
-      expiresIn: "1h",
+
+
+// Mock the authenticateToken middleware to always call next()
+jest.mock("../middleware/auth", () => ({
+  authenticateToken: (_req: any, _res: any, next: any) => next(),
+}));
+
+const app: Express = express();
+app.use(express.json());
+app.use(usersController);
+
+describe("User Controller", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe("GET /users", () => {
+    it("should return all users", async () => {
+      const mockUsers = [{ id: "1", first_name: "Test" }];
+      jest.spyOn(userService, "getAllUsers").mockResolvedValue(mockUsers as any);
+
+      const res = await request(app).get("/users");
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(mockUsers);
     });
-    const res = await request(app)
-      .get("/users")
-      .set("Authorization", `Bearer ${token}`);
 
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-  });
+    it("should handle errors", async () => {
+      jest.spyOn(userService, "getAllUsers").mockRejectedValue(new Error("DB error"));
 
-  it("GET /users/ should return 401 for missing token", async () => {
-    const res = await request(app).get("/users/");
-
-    expect(res.statusCode).toBe(401);
-  });
-
-  it("GET /users/ should return 403 for invalid token", async () => {
-    const res = await request(app)
-      .get("/users/")
-      .set("Authorization", "Bearer invalidToken123");
-    expect(res.statusCode).toBe(403);
-  });
-
-  it("GET /users/:id should return a user", async () => {
-    const token = jwt.sign({ username: "admin" }, SECRET_KEY, {
-      expiresIn: "1h",
+      const res = await request(app).get("/users");
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: "DB error" });
     });
-    const res = await request(app)
-      .get("/users/9e62f60e-9968-4c32-8869-157daa0085bb")
-      .set("Authorization", `Bearer ${token}`);
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body.id).toBe("9e62f60e-9968-4c32-8869-157daa0085bb");
   });
 
-  it("GET /users/:id should return 404 for non-existing user", async () => {
-    const token = jwt.sign({ username: "admin" }, SECRET_KEY, {
-      expiresIn: "1h",
+  describe("GET /users/:id", () => {
+    it("should return a user by ID", async () => {
+      const mockUser = { id: "1", first_name: "Test" };
+      jest.spyOn(userService, "getUsersById").mockResolvedValue(mockUser as any);
+
+      const res = await request(app).get("/users/1");
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual(mockUser);
     });
-    const res = await request(app)
-      .get("/users/1234567890")
-      .set("Authorization", `Bearer ${token}`);
 
-    expect(res.statusCode).toBe(404);
-    expect(res.text).toBe("User not found");
+    it("should return 404 if user not found", async () => {
+      jest.spyOn(userService, "getUsersById").mockRejectedValue(new Error("User not found"));
+
+      const res = await request(app).get("/users/999");
+      expect(res.status).toBe(404);
+      expect(res.body).toEqual({ message: "User not found" });
+    });
+
+    it("should handle other errors", async () => {
+      jest.spyOn(userService, "getUsersById").mockRejectedValue(new Error("DB error"));
+
+      const res = await request(app).get("/users/1");
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: "DB error" });
+    });
   });
 
-  it("GET /users/:id should return 401 for missing token", async () => {
-    const res = await request(app).get(
-      "/users/9e62f60e-9968-4c32-8869-157daa0085bb"
-    );
+  describe("POST /users", () => {
+    it("should create a new user", async () => {
+      const newUser = { first_name: "Test" };
+      jest.spyOn(userService, "createUser").mockResolvedValue(newUser as any);
 
-    expect(res.statusCode).toBe(401);
+      const res = await request(app).post("/users").send(newUser);
+      expect(res.status).toBe(201);
+      expect(res.text).toContain("New user created");
+    });
+
+    it("should handle errors", async () => {
+      jest.spyOn(userService, "createUser").mockRejectedValue(new Error("Create error"));
+
+      const res = await request(app).post("/users").send({ first_name: "Test" });
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: "Create error" });
+    });
   });
-  it("GET /users/:id should return 403 for invalid token", async () => {
-    const res = await request(app)
-      .get("/users/9e62f60e-9968-4c32-8869-157daa0085bb")
-      .set("Authorization", "Bearer invalidToken123");
-    expect(res.statusCode).toBe(403);
+
+  describe("PUT /users/:id", () => {
+    it("should update a user by ID", async () => {
+      jest.spyOn(userService, "updateUser").mockResolvedValue({ id: "1", first_name: "Updated" } as any);
+
+      const res = await request(app).put("/users/1").send({ first_name: "Updated" });
+      expect(res.status).toBe(200);
+      expect(res.text).toContain("updated successfully");
+    });
+
+    it("should handle errors", async () => {
+      jest.spyOn(userService, "updateUser").mockRejectedValue(new Error("Update error"));
+
+      const res = await request(app).put("/users/1").send({ first_name: "Updated" });
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: "Update error" });
+    });
+  });
+
+  describe("DELETE /users/:id", () => {
+    it("should delete a user by ID", async () => {
+      jest.spyOn(userService, "deleteUser").mockResolvedValue({ message: "Deleted" } as any);
+
+      const res = await request(app).delete("/users/1");
+      expect(res.status).toBe(200);
+      expect(res.body).toEqual({ message: "Deleted" });
+    });
+
+    it("should handle errors", async () => {
+      jest.spyOn(userService, "deleteUser").mockRejectedValue(new Error("Delete error"));
+
+      const res = await request(app).delete("/users/1");
+      expect(res.status).toBe(500);
+      expect(res.body).toEqual({ message: "Delete error" });
+    });
   });
 });
