@@ -1,0 +1,37 @@
+org: bonodev
+app: hotel-miranda-dashboard-backend
+service: nodejs-aws-lambda
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: eu-west-3
+  environment:
+    MONGODB_URI: ${env:MONGODB_URI}
+    JWT_SECRET: ${env:JWT_SECRET}
+    PORT: ${env:PORT}
+  httpApi:
+    payload: '2.0'
+    cors:
+      allowedOrigins:
+      - "*"
+      allowedMethods:
+      - GET
+      - POST
+      - PUT
+      - DELETE
+      - OPTIONS
+      allowedHeaders:
+      - Content-Type
+      - Authorization
+
+functions:
+  app:
+    handler: dist/lambda.handler
+    events:
+    - httpApi:
+        path: /
+        method: ANY
+    - httpApi:
+        path: /{proxy+}
+        method: ANY

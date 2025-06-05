@@ -34,6 +34,7 @@ export const loginController = Router();
  */
 
 loginController.post("/login", async (req: any, res: any) => {
+  console.log("Login request received:", req.body);
   try {
     const { status, data, message } = await loginUser(
       req.body.email,
