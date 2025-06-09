@@ -102,7 +102,7 @@ roomsController.get(
  * @swagger
  * /rooms/{id}:
  *   get:
- *     summary: Obtener una habitación por ID
+ *     summary: Obtener una habitación por roomNumber
  *     tags: [Rooms]
  *     security:
  *       - bearerAuth: []

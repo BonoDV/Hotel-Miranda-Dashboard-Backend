@@ -16,6 +16,7 @@ const BookingSchema = new Schema({
   status: String,
   phone: String,
   email: String,
+  roomNumber: Number,
 });
 
 export default model("Booking", BookingSchema);

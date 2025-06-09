@@ -1,10 +1,7 @@
 import app from "./app";
 import { connectDB } from "./db";
 
-
 const PORT = process.env.PORT;
-
-
 
 connectDB().then(() => {
   app.listen(PORT, () => {
