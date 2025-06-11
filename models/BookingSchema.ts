@@ -5,7 +5,7 @@ const BookingSchema = new Schema({
   id: { type: String, unique: true },
   name: String,
   image: String,
-  orderDate: String,
+  orderDate: Date,
   checkIn: Date,
   checkOut: Date,
   specialRequest: {
