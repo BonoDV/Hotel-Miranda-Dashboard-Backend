@@ -1,11 +1,12 @@
 import app from "./app";
 import { connectDB } from "./db";
-
-const PORT = process.env.PORT;
+import serverless from "serverless-http";
 
 connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Servidor corriendo en puerto ${PORT}`);
-    console.log("Documentación corriendo en http://localhost:3000/api-docs/");
+  app.listen(process.env.PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${process.env.PORT}`);
   });
+  console.log("Base de datos conectada");
 });
+
+export const handler = serverless(app);

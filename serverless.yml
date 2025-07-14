@@ -1,37 +1,17 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
 org: bonodev
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
 app: hotel-miranda-dashboard-backend
 service: nodejs-aws-lambda
-
 provider:
   name: aws
   runtime: nodejs22.x
   region: eu-west-3
-  environment:
-    MONGODB_URI: ${env:MONGODB_URI}
-    JWT_SECRET: ${env:JWT_SECRET}
-    PORT: ${env:PORT}
-  httpApi:
-    payload: '2.0'
-    cors:
-      allowedOrigins:
-      - "*"
-      allowedMethods:
-      - GET
-      - POST
-      - PUT
-      - DELETE
-      - OPTIONS
-      allowedHeaders:
-      - Content-Type
-      - Authorization
-
 functions:
   app:
-    handler: dist/lambda.handler
+    handler: dist/server.handler
+    environment:
+      MONGODB_URI: "mongodb+srv://admin:Zv9yfyvuLDqudCwT@cluster0.3pqaekg.mongodb.net/Hotel_Dashboard?retryWrites=true&w=majority"
     events:
-    - httpApi:
-        path: /
-        method: ANY
-    - httpApi:
-        path: /{proxy+}
-        method: ANY
+    - http: ANY /
+    - http: ANY /{proxy+}

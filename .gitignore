@@ -3,3 +3,5 @@
 dist/
 
 .serverless/
+
+deploy.ps1

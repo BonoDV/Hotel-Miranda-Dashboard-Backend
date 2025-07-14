@@ -169,6 +169,7 @@ bookingsController.post(
   authenticateToken,
   async (req: Request, res: Response) => {
     const newBooking = req.body;
+    console.log("BODY RECIBIDO:", req.body);
     try {
       const bookingCreate = await createBooking(newBooking);
       res

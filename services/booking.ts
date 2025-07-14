@@ -24,6 +24,8 @@ export const createBooking = async (bookingData: any) => {
   const newBooking = new Booking(bookingData);
   newBooking.id = new mongoose.Types.ObjectId().toString();
 
+  console.log("DATOS A GUARDAR:", newBooking);
+
   const validationError = newBooking.validateSync();
   if (validationError) {
     throw new Error(`Validation failed: ${validationError.message}`);
