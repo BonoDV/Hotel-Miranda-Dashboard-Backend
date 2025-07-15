@@ -12,7 +12,7 @@ export const getBookingsById = async (id: string) => {
   return booking;
 };
 
-export const createBooking = async (bookingData: any) => {
+export const createBooking = async (bookingData: any) => { 
   // Normalizar fechas
   if (bookingData.checkIn?.$date) {
     bookingData.checkIn = new Date(bookingData.checkIn.$date);
