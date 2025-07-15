@@ -5,7 +5,7 @@ app: hotel-miranda-dashboard-backend
 service: nodejs-aws-lambda
 provider:
   name: aws
-  runtime: nodejs22.x
+  runtime: nodejs20.x
   region: eu-west-3
 functions:
   app:
