@@ -23,14 +23,14 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: ls -l
-    - name: Serverless install
-      run: npx serverless
     - name: Serverless login
-      run: serverless login --token $SERVERLESS_ACCESS_KEY
+      run: npx serverless login --token $SERVERLESS_ACCESS_KEY
       env:
         SERVERLESS_ACCESS_KEY: ${{ secrets.SERVERLESS_ACCESS_KEY }}
     - name: Deploy with serverless CLI
-      run: serverless deploy
+      run: npx serverless deploy
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+
