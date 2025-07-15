@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
 
-export const contactController = Router();
+export const contactController = Router(); 
 
 // Get all contacts
 contactController.get(
