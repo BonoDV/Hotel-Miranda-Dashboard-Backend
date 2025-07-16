@@ -11,7 +11,8 @@ functions:
   app:
     handler: dist/server.handler
     environment:
-      MONGODB_URI: "mongodb+srv://admin:Zv9yfyvuLDqudCwT@cluster0.3pqaekg.mongodb.net/Hotel_Dashboard?retryWrites=true&w=majority"
+      JWT_SECRET: ${env:JWT_SECRET}
+      MONGODB_URI: ${env:MONGODB_URI}
     events:
     - http: ANY /
     - http: ANY /{proxy+}
