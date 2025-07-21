@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import bookingsController from "./controllers/booking";
 import roomsController from "./controllers/room";
 import usersController from "./controllers/user";
@@ -15,13 +15,7 @@ const port = process.env.PORT;
 
 app.use(cors());
 
-app
-  .use(
-    express.urlencoded({
-      extended: true,
-    })
-  )
-  .use(express.json({ limit: "1mb" }));
+app.use(json());
 
 // Montar las rutas del controlador
 app.use(
