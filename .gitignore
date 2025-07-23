@@ -9,3 +9,4 @@ deploy.ps1
 .vercel/
 
 node_modules/
+.vercel

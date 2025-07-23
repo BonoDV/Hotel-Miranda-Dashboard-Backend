@@ -7,8 +7,11 @@ import loginController from "./controllers/login";
 import publicController from "./controllers/public";
 import { swaggerUi, swaggerSpec } from "./swagger";
 import cors from "cors";
+import { connectDB } from "./db";
 
 require("dotenv").config();
+
+connectDB();
 
 const app = express();
 const port = process.env.PORT;
