@@ -8,4 +8,4 @@ deploy.ps1
 
 .vercel/
 
-.node_modules/
+node_modules/
