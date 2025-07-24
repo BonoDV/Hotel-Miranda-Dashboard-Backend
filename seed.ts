@@ -13,6 +13,7 @@ function randomInt(min: number, max: number): number {
 }
 
 async function seedRooms() {
+  await Room.deleteMany({});
   const roomTypes = ["Single", "Double", "Suite"];
   const bedTypes = ["Single", "Double", "Queen", "King"];
   const amenitiesList = [
@@ -55,6 +56,7 @@ async function seedRooms() {
 }
 
 async function seedUsers() {
+  await User.deleteMany({});
   const jobRoles = ["Receptionist", "Manager", "Cleaner", "Chef", "Concierge"];
   const schedules = ["Morning", "Evening", "Night"];
 
@@ -105,6 +107,7 @@ async function seedBookings() {
     });
     const name = faker.person.fullName();
 
+    const specialRequestStatus = faker.datatype.boolean();
     bookings.push({
       id: uuidv4(),
       name,
@@ -113,8 +116,8 @@ async function seedBookings() {
       checkIn,
       checkOut,
       specialRequest: {
-        status: faker.datatype.boolean(),
-        text: faker.lorem.sentence(),
+        status: specialRequestStatus,
+        text: specialRequestStatus ? faker.lorem.sentence() : "",
       },
       roomType,
       status: faker.helpers.arrayElement([
