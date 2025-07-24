@@ -17,13 +17,20 @@ async function seedRooms() {
   const roomTypes = ["Single", "Double", "Suite"];
   const bedTypes = ["Single", "Double", "Queen", "King"];
   const amenitiesList = [
-    "Wi-Fi",
-    "TV",
-    "Minibar",
-    "Air Conditioning",
-    "Safe",
-    "Balcony",
-    "Coffee Maker",
+    "Air Aconditioner",
+    "High speed WiFi",
+    "Breakfast",
+    "Kitchen",
+    "Cleaning",
+    "Shower",
+    "Grocery",
+    "Single bed",
+    "Shop near",
+    "Towels",
+    "24/7 Online Support",
+    "Strong Locker",
+    "Smart Security",
+    "Expert Team",
   ];
   const cancellationPolicies = [
     "Free cancellation",
