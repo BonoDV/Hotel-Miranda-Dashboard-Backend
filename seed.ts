@@ -128,10 +128,10 @@ async function seedBookings() {
       },
       roomType,
       status: faker.helpers.arrayElement([
+        "Pending",
         "Booked",
-        "Checked In",
-        "Checked Out",
         "Cancelled",
+        "Refund",
       ]),
       phone: faker.phone.number(),
       email: faker.internet.email({
