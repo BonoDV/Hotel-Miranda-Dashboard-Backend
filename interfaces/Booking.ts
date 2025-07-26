@@ -3,8 +3,8 @@ export type Bookings = {
   name: string;
   image: string;
   orderDate: string;
-  checkIn: Date;
-  checkOut: Date;
+  checkIn: string;
+  checkOut: string;
   specialRequest: {
     status: boolean;
     text: string;

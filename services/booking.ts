@@ -12,15 +12,7 @@ export const getBookingsById = async (id: string) => {
   return booking;
 };
 
-export const createBooking = async (bookingData: any) => { 
-  // Normalizar fechas
-  if (bookingData.checkIn?.$date) {
-    bookingData.checkIn = new Date(bookingData.checkIn.$date);
-  }
-  if (bookingData.checkOut?.$date) {
-    bookingData.checkOut = new Date(bookingData.checkOut.$date);
-  }
-
+export const createBooking = async (bookingData: any) => {
   const newBooking = new Booking(bookingData);
   newBooking.id = new mongoose.Types.ObjectId().toString();
 
