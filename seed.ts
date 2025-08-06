@@ -7,6 +7,7 @@ import { connectDB } from "./db";
 import Room from "./models/RoomSchema";
 import User from "./models/UserSchema";
 import Booking from "./models/BookingSchema";
+import Contact from "./models/ContactSchema";
 
 function randomInt(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1) + min);
@@ -145,6 +146,41 @@ async function seedBookings() {
   await Booking.insertMany(bookings);
 }
 
+async function seedContacts() {
+  await Contact.deleteMany({});
+  const contacts = [];
+
+  for (let i = 0; i < 50; i++) {
+    const name = faker.person.fullName();
+    const email = faker.internet.email({
+      firstName: name.split(" ")[0],
+      lastName: name.split(" ")[1] || "",
+    });
+    const phone = faker.phone.number();
+    const subject = faker.lorem.sentence();
+    const message = faker.lorem.sentence();
+    const status = faker.helpers.arrayElement([
+      "Published",
+      "Archived",
+      "Non Actioned",
+    ]);
+
+    contacts.push({
+      id: uuidv4(),
+      contactDate: faker.date.past(),
+      firstNameCustomer: name.split(" ")[0],
+      lastNameCustomer: name.split(" ")[1] || "",
+      emailCustomer: email,
+      phoneCustomer: phone,
+      subject,
+      message,
+      status,
+    });
+  }
+
+  await Contact.insertMany(contacts);
+}
+
 const args = process.argv.slice(2);
 
 (async () => {
@@ -160,13 +196,19 @@ const args = process.argv.slice(2);
     case "bookings":
       await seedBookings();
       break;
+    case "contacts":
+      await seedContacts();
+      break;
     case "all":
       await seedRooms();
       await seedUsers();
       await seedBookings();
+      await seedContacts();
       break;
     default:
-      console.log("Usa: npx ts-node seed.ts [rooms|users|bookings|all]");
+      console.log(
+        "Usa: npx ts-node seed.ts [rooms|users|bookings|contacts|all]"
+      );
   }
 
   await mongoose.disconnect();
