@@ -1,14 +1,18 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
+import { getAllContacts } from "../services/contact";
 
-export const contactController = Router(); 
-
-// Get all contacts
+export const contactController = Router();
 contactController.get(
   "/contacts",
   authenticateToken,
-  (req: Request, res: Response) => {
-    res.send("Contacts page");
+  async (req: Request, res: Response) => {
+    try {
+      const contacts = await getAllContacts();
+      res.send(contacts);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
