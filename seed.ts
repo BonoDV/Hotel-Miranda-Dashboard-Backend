@@ -168,7 +168,6 @@ async function seedContacts() {
     contacts.push({
       id: uuidv4(),
       contactDate: faker.date.past(),
-      photo: faker.image.avatar(),
       firstNameCustomer: name.split(" ")[0],
       lastNameCustomer: name.split(" ")[1] || "",
       emailCustomer: email,

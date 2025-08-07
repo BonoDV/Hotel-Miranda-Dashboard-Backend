@@ -4,7 +4,6 @@ const { Schema, model } = mongoose;
 const ContactSchema = new Schema({
   id: { type: String, unique: true },
   contactDate: Date,
-  photo: String,
   firstNameCustomer: String,
   lastNameCustomer: String,
   emailCustomer: String,
