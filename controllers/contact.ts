@@ -1,6 +1,10 @@
 import { Request, Response, Router } from "express";
 import { authenticateToken } from "../middleware/auth";
-import { getAllContacts } from "../services/contact";
+import {
+  getAllContacts,
+  getContactsStatusNonActioned,
+  updateContact,
+} from "../services/contact";
 
 export const contactController = Router();
 contactController.get(
@@ -26,6 +30,15 @@ contactController.get(
   }
 );
 
+// Get contacts status non actioned
+contactController.get(
+  "/contacts/status/non-actioned",
+  authenticateToken,
+  async (req: Request, res: Response) => {
+    const contacts = await getContactsStatusNonActioned();
+    res.send(contacts);
+  }
+);
 // Create a new contact
 contactController.post(
   "/contacts",
@@ -40,9 +53,17 @@ contactController.post(
 contactController.put(
   "/contacts/:id",
   authenticateToken,
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     const contactId = req.params.id;
-    res.send(`Contact with ID: ${contactId} updated`);
+    const updatedContactData = req.body;
+    try {
+      const updatedContact = await updateContact(contactId, updatedContactData);
+      res
+        .status(200)
+        .send(`Contact with ID: ${contactId} updated successfully`);
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 

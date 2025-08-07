@@ -13,6 +13,10 @@ export const getContactsById = async (id: string) => {
   return contact;
 };
 
+export const getContactsStatusNonActioned = async () => {
+  return await Contact.find({ status: "Non Actioned" });
+};
+
 export const createContact = async (contactData: any) => {
   const newContact = new Contact(contactData);
   newContact.id = new mongoose.Types.ObjectId().toString();
@@ -30,4 +34,18 @@ export const createContact = async (contactData: any) => {
   }
 
   return await newContact.save();
+};
+
+export const updateContact = async (contactId: string, contactData: JSON) => {
+  const contact = await Contact.findOne({ id: contactId });
+  if (!contact) {
+    throw new Error("Contact not found");
+  }
+
+  Object.assign(contact, contactData);
+  const validationError = contact.validateSync();
+  if (validationError) {
+    throw new Error(`Validation failed: ${validationError.message}`);
+  }
+  return await contact.save();
 };
