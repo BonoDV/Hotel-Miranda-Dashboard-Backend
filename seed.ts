@@ -48,8 +48,8 @@ async function seedRooms() {
       bedType: faker.helpers.arrayElement(bedTypes),
       roomFloor: `${randomInt(1, 5)}`,
       photos: [
-        faker.image.urlLoremFlickr({ category: "hotel" }),
-        faker.image.urlLoremFlickr({ category: "interior" }),
+        faker.image.urlLoremFlickr({ category: "nature" }),
+        faker.image.urlLoremFlickr({ category: "city" }),
       ],
       description: faker.lorem.paragraph(),
       offer: faker.helpers.arrayElement(["YES", "NO"]),
@@ -168,6 +168,7 @@ async function seedContacts() {
     contacts.push({
       id: uuidv4(),
       contactDate: faker.date.past(),
+      photo: faker.image.avatar(),
       firstNameCustomer: name.split(" ")[0],
       lastNameCustomer: name.split(" ")[1] || "",
       emailCustomer: email,

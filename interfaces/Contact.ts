@@ -6,6 +6,7 @@ export enum ContactStatus {
 
 export type Contact = {
   contactDate: string;
+  photo: string;
   id: string;
   firstNameCustomer: string;
   lastNameCustomer: string;
