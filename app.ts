@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 const port = process.env.PORT;
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(json());
 
